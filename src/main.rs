@@ -16,7 +16,7 @@ fn run_command(command: &mut String, arg: Vec<String>) -> bool {
     let mut title = String::new();
     title += "  [";
     title += command;
-    title += "] run tool 1.0";
+    title += "] run tool 1.1";
     for _ in 0..(term.size().1 - (command.len() as u16) - 3 - 14) {
         title += " ";
     }
