@@ -5,7 +5,7 @@ use std::sync::mpsc;
 use std::time;
 use std::{
     io::stdin,
-    process::{exit, Command},
+    process::{exit, Command, Stdio},
 };
 
 fn run_command(command: &mut String, arg: Vec<String>) -> bool { 
@@ -24,7 +24,11 @@ fn run_command(command: &mut String, arg: Vec<String>) -> bool {
     println!("{}", style(title).on_blue());
 
     let timer = time::Instant::now();
-    let mut task = match Command::new(&command).args(&arg).spawn() {
+    let mut task = match Command::new("cmd")
+        .arg("/c")
+        .arg(&command)
+        .args(&arg)
+        .stderr(Stdio::piped()).spawn() {
         Ok(c) => c,
         Err(_c) => {
             println!("{}", style("wrong command").red());
@@ -54,7 +58,7 @@ fn run_command(command: &mut String, arg: Vec<String>) -> bool {
             Ok(Some(statue)) => {
                 exit_code = statue;
                 break;
-            },
+            }
             _ => {}
         }
         match rx.try_recv().is_ok() {
